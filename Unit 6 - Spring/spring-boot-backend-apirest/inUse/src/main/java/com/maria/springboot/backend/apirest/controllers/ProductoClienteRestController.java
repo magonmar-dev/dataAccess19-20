@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,48 +24,47 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maria.springboot.backend.apirest.models.entity.ProductoCliente;
 import com.maria.springboot.backend.apirest.models.entity.ProductoClienteID;
-import com.maria.springboot.backend.apirest.models.services.IProductoClienteService;
+import com.maria.springboot.backend.apirest.models.services.ProductoClienteServiceImpl;
 
 @CrossOrigin(origins={"http://localhost:4200"}) 
 @RestController 
 @RequestMapping("/api")
 public class ProductoClienteRestController {
 
-	@Autowired
-	private IProductoClienteService productoClienteService;
+	private ProductoClienteServiceImpl comprasService;
 	
-	@GetMapping("/productosClientes") 
+	@GetMapping("/productos_clientes")
 	public List<ProductoCliente> index() {
-		return productoClienteService.findAll();
+		return comprasService.findAll();
 	}
 	
-	@GetMapping("/productosClientes/{id}") 
+	@GetMapping("/productos_clientes/{id}") 
 	public ResponseEntity<?> show(@PathVariable ProductoClienteID id) {
 
-		ProductoCliente productoCliente = null;
+		ProductoCliente compra = null;
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			productoCliente = productoClienteService.findById(id);
+			compra = comprasService.findById(id);
 		} catch(DataAccessException e) {
 			response.put("mensaje", "Error al realizar la consulta en las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(productoCliente == null) {
+		if(compra == null) {
 			response.put("mensaje", "La compra ID: ".concat(id.toString().concat(" no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<ProductoCliente>(productoCliente, HttpStatus.OK);
+		return new ResponseEntity<ProductoCliente>(compra, HttpStatus.OK);
 	}
 	
-	@PostMapping("/productosClientes")
+	@PostMapping("/productos_clientes")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> create(@Valid @RequestBody ProductoCliente productoCliente, BindingResult result) {
+	public ResponseEntity<?> create(@Valid @RequestBody ProductoCliente compra, BindingResult result) {
 		
-		ProductoCliente productoNew = null;
+		ProductoCliente compraNew = null;
 		Map<String, Object> response = new HashMap<>();
 		
 		if(result.hasErrors()) {
@@ -81,7 +79,7 @@ public class ProductoClienteRestController {
 		}
 		
 		try {
-			productoNew = productoClienteService.save(productoCliente);
+			compraNew = comprasService.save(compra);
 		} catch(DataAccessException e) {
 			response.put("mensaje", "Error al insertar la compra en las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -89,17 +87,17 @@ public class ProductoClienteRestController {
 		}
 		
 		response.put("mensaje", "La compra ha sido creada con éxito!");
-		response.put("producto", productoNew);
+		response.put("compra", compraNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/productosClientes/{id}")
+	@PutMapping("/productos_clientes/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> update(@Valid @RequestBody ProductoCliente productoCliente, BindingResult result, @PathVariable ProductoClienteID id) {
+	public ResponseEntity<?> update(@Valid @RequestBody ProductoCliente compra, BindingResult result, @PathVariable ProductoClienteID id) {
 		
-		ProductoCliente productoClienteActual = productoClienteService.findById(id);
+		ProductoCliente compraActual = comprasService.findById(id);
 		
-		ProductoCliente productoClienteUpdated = null;
+		ProductoCliente compraUpdated = null;
 		
 		Map<String, Object> response = new HashMap<>();
 		
@@ -114,18 +112,18 @@ public class ProductoClienteRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 		
-		if(productoClienteActual == null) {
+		if(compraActual == null) {
 			response.put("mensaje", "Error: no se puede editar la compra ID: "
 					.concat(id.toString().concat(" no existe en la base de datos!")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
 		try {
-			productoClienteActual.setCliente(productoCliente.getCliente());
-			productoClienteActual.setProducto(productoCliente.getProducto());
-			productoClienteActual.setFechaCompra(productoCliente.getFechaCompra());
+			compraActual.setCliente(compra.getCliente());
+			compraActual.setProducto(compra.getProducto());
+			compraActual.setId(compra.getId());
 			
-			productoClienteUpdated = productoClienteService.save(productoClienteActual);
+			compraUpdated = comprasService.save(compraActual);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al actualizar la compra en las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -133,19 +131,19 @@ public class ProductoClienteRestController {
 		}
 		
 		response.put("mensaje", "La compra ha sido actualizada con éxito!");
-		response.put("producto", productoClienteUpdated);
+		response.put("compra", compraUpdated);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/productos/{id}")
+	@DeleteMapping("/productos_clientes/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable ProductoClienteID id) {
 		
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			productoClienteService.delete(id);
+			comprasService.delete(id);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al eliminar la compra de las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

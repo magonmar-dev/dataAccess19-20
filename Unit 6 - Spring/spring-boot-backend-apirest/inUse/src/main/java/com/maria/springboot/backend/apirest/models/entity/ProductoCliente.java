@@ -1,39 +1,33 @@
 package com.maria.springboot.backend.apirest.models.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "productos_clientes")
 public class ProductoCliente implements Serializable {
 
 	@EmbeddedId
-	private ProductoClienteID id;
+	public ProductoClienteID id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("codProducto")
-    private Producto producto;
+	@MapsId("codProducto")
+	@ManyToOne
+	@JoinColumn(name="cod_producto")
+	@JsonManagedReference
+	public Producto producto;
  
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idCliente")
-    private Cliente cliente;
-    
-    @JsonIgnore
-    @Column(name="fecha_compra", insertable=false, updatable=false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaCompra;
+	@MapsId("idCliente")
+    @ManyToOne
+    @JoinColumn(name="id_cliente")
+    @JsonManagedReference
+    public Cliente cliente;
 
 	public ProductoClienteID getId() {
 		return id;
@@ -57,14 +51,6 @@ public class ProductoCliente implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public Date getFechaCompra() {
-		return fechaCompra;
-	}
-
-	public void setFechaCompra(Date fechaCompra) {
-		this.fechaCompra = fechaCompra;
 	}
 
 	private static final long serialVersionUID = 3L;

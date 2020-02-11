@@ -24,17 +24,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind. annotation. RestController;
 
 import com.maria.springboot.backend.apirest.models.entity.Cliente;
-import com.maria.springboot.backend.apirest.models.services.IClienteService;
+import com.maria.springboot.backend.apirest.models.services.ClienteServiceImpl;
 
 @CrossOrigin(origins={"http://localhost:4200"}) 
 @RestController 
 @RequestMapping("/api") 
 public class ClienteRestController {
 	
-	@Autowired 
-	private IClienteService clienteService;
+	@Autowired
+	private ClienteServiceImpl clienteService;
 	
-	@GetMapping("/clientes") 
+	@GetMapping("/clientes")
 	public List<Cliente> index() {
 		return clienteService.findAll();
 	}

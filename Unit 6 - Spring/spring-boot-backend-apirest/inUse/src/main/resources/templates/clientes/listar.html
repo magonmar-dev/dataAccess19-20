@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+		<title th:text="${titulo}"></title>
+	</head>
+	<body>
+		<h1 th:text="${titulo}"></h1>
+		<div th:if="${clientes.isEmpty()}">No hay clientes en la lista</div>
+		<table class="table_lista" th:if="${not clientes.isEmpty()}">
+			<thead>
+				<tr>
+					<th class="th_lista">NOMBRE</th>
+					<th class="th_lista">APELLIDO</th>
+					<th class="th_lista">EMAIL</th>
+					<th class="th_lista">FECHA DE CREACIÓN</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cliente: ${clientes}">
+					<td class="td_lista" th:text="${cliente.nombre}"></td>
+					<td class="td_lista" th:text="${cliente.apellido}"></td>
+					<td class="td_lista" th:text="${cliente.email}"></td>
+					<td class="td_lista" th:text="${cliente.createAt}"></td>
+					<td class="td_lista"><a th:href="@{http://localhost:8080/app/clientes/modificar/} + ${cliente.id}">Modificar</a></td>
+					<td class="td_lista"><a th:href="@{http://localhost:8080/app/clientes/eliminar/} + ${cliente.id}">Eliminar</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<a class="add_button" th:href="@{/app/clientes/crear}">Añadir cliente</a>
+		<a class="volver_button" th:href="@{http://localhost:8080/app/index}">Volver al index</a>
+	</body>
+	</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+		<title>Insertar nuevo cliente</title>
+	</head>
+	<body>
+		<h1>Insertar nuevo cliente</h1>
+		<form th:action="@{http://localhost:8080/app/clientes/crear}" th:object="${cliente}" method="post">
+		    <fieldset>
+		        <legend>Datos del cliente</legend>
+		        <table class="table_form">
+		            <tr>
+		                <td class="td_form"><label>Nombre: </label></td>
+		                <td class="td_form"><input type="text" th:field="*{nombre}"/></td>
+		            </tr> 
+		            <tr>
+		                <td class="td_form"><label>Apellido: </label></td>
+		                <td class="td_form"><input type="text" th:field="*{apellido}"/></td>
+		            </tr>
+		            <tr>
+		                <td class="td_form"><label>Email: </label></td>
+		                <td class="td_form"><input type="text" th:field="*{email}"/></td>
+		            </tr>
+		            <tr>
+		                <td class="td_form"><label>Fecha: </label></td>
+		                <td class="td_form"><input type="date" th:field="*{createAt}"/></td>
+		            </tr>
+		            <tr>
+		                <td class="td_form"><button type="submit">Añadir</button></td>
+		                <td class="td_form"><a class="volver_button" th:href="@{http://localhost:8080/app/index}">Volver al index</a></td>
+		            </tr>
+		        </table>
+		    </fieldset>
+		</form>
+	</body>
+</html>
