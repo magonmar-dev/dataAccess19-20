@@ -7,9 +7,9 @@ import com.maria.springboot.backend.apirest.models.entity.ProductoClienteID;
 
 public interface IProductoClienteService {
 
-	public List<ProductoCliente> findAll();
+public List<ProductoCliente> findAll();
 	
-	public ProductoCliente save(ProductoCliente compra);
+	public ProductoCliente save(ProductoCliente cliente);
 	
 	public ProductoCliente findById(ProductoClienteID id);
 	

@@ -24,29 +24,29 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maria.springboot.backend.apirest.models.entity.Producto;
-import com.maria.springboot.backend.apirest.models.services.ProductoServiceImpl;
+import com.maria.springboot.backend.apirest.models.services.IProductoService;
 
 @CrossOrigin(origins={"http://localhost:4200"}) 
 @RestController 
 @RequestMapping("/api") 
 public class ProductoRestController {
 
-	@Autowired
-	private ProductoServiceImpl productoService;
+	@Autowired 
+	private IProductoService productoService;
 	
 	@GetMapping("/productos") 
 	public List<Producto> index() {
 		return productoService.findAll();
 	}
 	
-	@GetMapping("/productos/{codproducto}") 
-	public ResponseEntity<?> show(@PathVariable Long codproducto) {
+	@GetMapping("/productos/{id}") 
+	public ResponseEntity<?> show(@PathVariable Long id) {
 
 		Producto producto = null;
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			producto = productoService.findById(codproducto);
+			producto = productoService.findById(id);
 		} catch(DataAccessException e) {
 			response.put("mensaje", "Error al realizar la consulta en las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -54,7 +54,7 @@ public class ProductoRestController {
 		}
 		
 		if(producto == null) {
-			response.put("mensaje", "El producto COD: ".concat(codproducto.toString().concat(" no existe en la base de datos")));
+			response.put("mensaje", "El producto ID: ".concat(id.toString().concat(" no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
@@ -92,11 +92,11 @@ public class ProductoRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/productos/{codproducto}")
+	@PutMapping("/productos/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> update(@Valid @RequestBody Producto producto, BindingResult result, @PathVariable Long codproducto) {
+	public ResponseEntity<?> update(@Valid @RequestBody Producto producto, BindingResult result, @PathVariable Long id) {
 		
-		Producto productoActual = productoService.findById(codproducto);
+		Producto productoActual = productoService.findById(id);
 		
 		Producto productoUpdated = null;
 		
@@ -114,8 +114,8 @@ public class ProductoRestController {
 		}
 		
 		if(productoActual == null) {
-			response.put("mensaje", "Error: no se puede editar el producto COD: "
-					.concat(codproducto.toString().concat(" no existe en la base de datos!")));
+			response.put("mensaje", "Error: no se puede editar el producto ID: "
+					.concat(id.toString().concat(" no existe en la base de datos!")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
@@ -138,14 +138,14 @@ public class ProductoRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/productos/{codproducto}")
+	@DeleteMapping("/productos/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<?> delete(@PathVariable Long codproducto) {
+	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			productoService.delete(codproducto);
+			productoService.delete(id);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al eliminar el producto de las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

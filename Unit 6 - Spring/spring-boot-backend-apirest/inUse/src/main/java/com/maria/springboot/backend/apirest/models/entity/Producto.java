@@ -17,10 +17,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
 @Table(name = "productos")
 public class Producto implements Serializable {
@@ -33,11 +29,12 @@ public class Producto implements Serializable {
 	@Column(nullable=false)
 	private String descripcion;
 	
+	@NotEmpty(message="no puede estar vacío")
+	@Column(nullable=false)
 	private Float precio;
 	
 	@Column(name = "fecha_alta")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fechaAlta;
 	
 	private Boolean disponibilidad;
@@ -47,7 +44,6 @@ public class Producto implements Serializable {
         cascade = CascadeType.ALL,
         orphanRemoval = true
 	)
-	@JsonBackReference
     private Set<ProductoCliente> compras = new HashSet<>();
 
 	public Long getCodproducto() {

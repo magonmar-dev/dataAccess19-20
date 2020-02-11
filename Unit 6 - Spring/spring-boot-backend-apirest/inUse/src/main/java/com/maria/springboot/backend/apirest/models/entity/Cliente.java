@@ -11,19 +11,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "clientes")
@@ -48,19 +42,13 @@ public class Cliente implements Serializable {
 	
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createAt;
-	
-	@OneToOne
-	@JoinColumn(name="idusuario",unique=true,nullable=true)
-	private Usuario usuario;
 	
 	@OneToMany(
         mappedBy = "cliente",
         cascade = CascadeType.ALL,
         orphanRemoval = true
 	)
-	@JsonBackReference
     private Set<ProductoCliente> compras = new HashSet<>();
 
 	public Long getId() {

@@ -8,8 +8,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Embeddable
 public class ProductoClienteID implements Serializable {
 
@@ -21,7 +19,6 @@ public class ProductoClienteID implements Serializable {
 	
 	@Column(name = "fecha_compra")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fechaCompra;
 
 	public Long getCodProducto() {
