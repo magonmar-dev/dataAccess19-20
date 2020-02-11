@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+		<title>Insertar nuevo producto</title>
+	</head>
+	<body>
+		<h1>Insertar nuevo producto</h1>
+		<form th:action="@{http://localhost:8080/app/productos/crear}" th:object="${producto}" method="post">
+		    <fieldset>
+		        <legend>Datos del producto</legend>
+		        <table class="table_form">
+		            <tr>
+		                <td class="td_form"><label>Descripción: </label></td>
+		                <td class="td_form"><input type="text" th:field="*{descripcion}"/></td>
+		            </tr> 
+		            <tr>
+		                <td class="td_form"><label>Precio: </label></td>
+		                <td class="td_form"><input type="number" min="0.01" step="0.01" th:field="*{precio}"/></td>
+		            </tr>
+		            <tr>
+		                <td class="td_form"><label>Fecha: </label></td>
+		                <td class="td_form"><input type="date" th:field="*{fechaAlta}"/></td>
+		            </tr>
+		            <tr>
+		                <td class="td_form"><label>Disponible: </label></td>
+		                <td class="td_form"><input type="checkbox" th:field="*{disponibilidad}"/></td>
+		            </tr>
+		            <tr>
+		                <td class="td_form"><button type="submit">Añadir</button></td>
+		                <td class="td_form"><a class="volver_button" 
+		                	th:href="@{http://localhost:8080/app/index}">Volver al index</a></td>
+		            </tr>
+		        </table>
+		    </fieldset>
+		</form>
+	</body>
+</html>
