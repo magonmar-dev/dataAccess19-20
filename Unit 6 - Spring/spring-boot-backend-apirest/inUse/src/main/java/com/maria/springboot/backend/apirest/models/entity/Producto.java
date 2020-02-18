@@ -98,5 +98,11 @@ public class Producto implements Serializable {
 		this.compras = compras;
 	}
 	
+	@Override
+	public String toString() {
+		return "Producto [codproducto=" + codproducto + ", descripcion=" + descripcion + ", precio=" + precio
+				+ ", fechaAlta=" + fechaAlta + ", disponibilidad=" + disponibilidad + ", compras=" + compras + "]";
+	}
+
 	private static final long serialVersionUID = 2L;
 }

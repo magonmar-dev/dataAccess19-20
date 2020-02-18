@@ -7,36 +7,37 @@
 	</head>
 	<body>
 	<h1>Modificar compra</h1>
-		<form action="#" th:action="@{http://localhost:8080/app/compras/modificar}" th:object="${compraMod}" method="post">
+		<form action="#" th:action="@{http://localhost:8080/app/productos_clientes/modificar}" th:object="${compraMod}" method="post">
 		    <fieldset>
 		        <legend>Datos de la compra a modificar</legend>
 		        <table class="table_form">
-		            <tr>
+		        	<tr>
 		                <td class="td_form"><label>Fecha: </label></td>
-		                <td class="td_form"><input type="date" id="fechaCompra" name="fechaCompra" th:value="${compra.id.fechaCompra}"/></td>
+		                <td class="td_form"><input type="date" th:field="*{id.fechaCompra}" id="fechaCompra" name="fechaCompra"/></td>
+		                <td class="td_form" th:text="${fechaActualFormateada}"></td>
 		            </tr>
 		            <tr>
 		                <td class="td_form"><label>Producto: </label></td>
 		                <td class="td_form">
-		                	<select th:field="*{id.codProducto}">
+		                	<select th:field="*{id.codProducto}" th:value="*{id.codProducto}" id="producto" name="producto">
 		                		<option data-th-each="producto : ${productos}" th:value="${producto.codproducto}"
-		                		 	id="producto" name="producto"
 		                			th:text="${producto.descripcion + ' (' + producto.precio + '€)'}"></option>
                 			</select>
                			</td>
+               			<td class="td_form" th:text="${compra.producto.descripcion + ' (' + compra.producto.precio + '€)'}"></td>
 		            </tr>
 		            <tr>
 		                <td class="td_form"><label>Cliente: </label></td>
 		                <td class="td_form">
-		                	<select th:field="*{id.idCliente}">
+		                	<select th:field="*{id.idCliente}" id="cliente" name="cliente">
 		                		<option data-th-each="cliente : ${clientes}" th:value="${cliente.id}"
-		                			id="cliente" name="cliente"
 		                			th:text="${cliente.nombre + ' ' + cliente.apellido}"></option>
                 			</select>
 	                	</td>
+	                	<td class="td_form" th:text="${compra.cliente.nombre}"></td>
 		            </tr>
 		            <tr>
-		                <td class="td_form"><button type="submit">Modificar</button></td>
+		                <td class="td_form"><button class="submit_button" type="submit">Modificar</button></td>
 		                <td class="td_form"><a class="volver_button" th:href="@{http://localhost:8080/app/index}">Volver al index</a></td>
 		            </tr>
 		        </table>

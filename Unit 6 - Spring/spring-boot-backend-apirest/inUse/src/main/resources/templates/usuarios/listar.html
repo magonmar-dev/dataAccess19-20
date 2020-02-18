@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+		<title th:text="${titulo}"></title>
+	</head>
+	<body>
+		<h1 th:text="${titulo}"></h1>
+		<div th:if="${usuarios.isEmpty()}">No hay usuarios en la lista</div>
+		<table class="table_lista" th:if="${not usuarios.isEmpty()}">
+			<thead>
+				<tr>
+					<th class="th_lista">USUARIO</th>
+					<th class="th_lista">CLIENTE</th>
+					<th class="th_lista">MAILS</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="usuario: ${usuarios}">
+					<td class="td_lista" th:text="${usuario.name}"></td>
+					<td class="td_lista" th:text="${usuario.cliente.nombre}"></td>
+					<td class="td_lista">
+						<p th:each="mail: ${usuario.mails}" th:text="${mail.mail}"></p>
+					</td>
+					<td><a class="mod_button" th:href="@{http://localhost:8080/app/usuarios/modificar/} + ${usuario.id}">Modificar</a></td>
+					<td><a class="del_button" th:href="@{http://localhost:8080/app/usuarios/eliminar/} + ${usuario.id}">Eliminar</a></td>
+					<td><a class="prod_button" th:href="@{http://localhost:8080/app/usuarios/productos/} + ${usuario.id}">Productos comprados</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<a class="add_button" th:href="@{/app/usuarios/crear}">Añadir usuario</a>
+		<a class="volver_button" th:href="@{http://localhost:8080/app/index}">Volver al index</a>
+	</body>
+</html>

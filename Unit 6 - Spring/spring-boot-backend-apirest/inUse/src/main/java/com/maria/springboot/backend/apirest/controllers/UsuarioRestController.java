@@ -23,50 +23,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maria.springboot.backend.apirest.models.entity.ProductoCliente;
-import com.maria.springboot.backend.apirest.models.entity.ProductoClienteID;
-import com.maria.springboot.backend.apirest.models.services.ProductoClienteServiceImpl;
+import com.maria.springboot.backend.apirest.models.entity.Usuario;
+import com.maria.springboot.backend.apirest.models.services.UsuarioServiceImpl;
 
 @CrossOrigin(origins={"http://localhost:4200"}) 
 @RestController 
-@RequestMapping("/api")
-public class ProductoClienteRestController {
+@RequestMapping("/api") 
+public class UsuarioRestController {
 
-	@Autowired(required=false)
-	private ProductoClienteServiceImpl comprasService;
+	@Autowired
+	private UsuarioServiceImpl usuarioService;
 	
-	@GetMapping("/productos_clientes")
-	public List<ProductoCliente> index() {
-		return comprasService.findAll();
+	@GetMapping("/usuarios")
+	public List<Usuario> index() {
+		return usuarioService.findAll();
 	}
 	
-	@GetMapping("/productos_clientes/{id}") 
-	public ResponseEntity<?> show(@PathVariable ProductoClienteID id) {
+	@GetMapping("/usuarios/{id}") 
+	public ResponseEntity<?> show(@PathVariable Long id) {
 
-		ProductoCliente compra = null;
+		Usuario usuario = null;
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			compra = comprasService.findById(id);
+			usuario = usuarioService.findById(id);
 		} catch(DataAccessException e) {
 			response.put("mensaje", "Error al realizar la consulta en las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(compra == null) {
-			response.put("mensaje", "La compra ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+		if(usuario == null) {
+			response.put("mensaje", "El usuario ID: ".concat(id.toString().concat(" no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<ProductoCliente>(compra, HttpStatus.OK);
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 	
-	@PostMapping("/productos_clientes")
+	@PostMapping("/usuarios")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> create(@Valid @RequestBody ProductoCliente compra, BindingResult result) {
+	public ResponseEntity<?> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		
-		ProductoCliente compraNew = null;
+		Usuario usuarioNew = null;
 		Map<String, Object> response = new HashMap<>();
 		
 		if(result.hasErrors()) {
@@ -81,25 +80,25 @@ public class ProductoClienteRestController {
 		}
 		
 		try {
-			compraNew = comprasService.save(compra);
+			usuarioNew = usuarioService.save(usuario);
 		} catch(DataAccessException e) {
-			response.put("mensaje", "Error al insertar la compra en las base de datos");
+			response.put("mensaje", "Error al insertar el usuario en las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		response.put("mensaje", "La compra ha sido creada con éxito!");
-		response.put("compra", compraNew);
+		response.put("mensaje", "El usuario ha sido creado con éxito!");
+		response.put("usuario", usuarioNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/productos_clientes/{id}")
+	@PutMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> update(@Valid @RequestBody ProductoCliente compra, BindingResult result, @PathVariable ProductoClienteID id) {
+	public ResponseEntity<?> update(@Valid @RequestBody Usuario usuario, BindingResult result, @PathVariable Long id) {
 		
-		ProductoCliente compraActual = comprasService.findById(id);
+		Usuario usuarioActual = usuarioService.findById(id);
 		
-		ProductoCliente compraUpdated = null;
+		Usuario usuarioUpdated = null;
 		
 		Map<String, Object> response = new HashMap<>();
 		
@@ -114,45 +113,46 @@ public class ProductoClienteRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 		
-		if(compraActual == null) {
-			response.put("mensaje", "Error: no se puede editar la compra ID: "
+		if(usuarioActual == null) {
+			response.put("mensaje", "Error: no se puede editar el usuario ID: "
 					.concat(id.toString().concat(" no existe en la base de datos!")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
 		try {
-			compraActual.setCliente(compra.getCliente());
-			compraActual.setProducto(compra.getProducto());
-			compraActual.setId(compra.getId());
+			usuarioActual.setName(usuario.getName());
+			usuarioActual.setPassword(usuario.getPassword());
+			usuarioActual.setCliente(usuario.getCliente());
+			usuarioActual.setMails(usuario.getMails());
 			
-			compraUpdated = comprasService.save(compraActual);
+			usuarioUpdated = usuarioService.save(usuarioActual);
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al actualizar la compra en las base de datos");
+			response.put("mensaje", "Error al actualizar el usuario en las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		response.put("mensaje", "La compra ha sido actualizada con éxito!");
-		response.put("compra", compraUpdated);
+		response.put("mensaje", "El usuario ha sido actualizado con éxito!");
+		response.put("usuario", usuarioUpdated);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/productos_clientes/{id}")
+	@DeleteMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<?> delete(@PathVariable ProductoClienteID id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			comprasService.delete(id);
+			usuarioService.delete(id);
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al eliminar la compra de las base de datos");
+			response.put("mensaje", "Error al eliminar el usuario de las base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		response.put("mensaje", "La compra ha sido eliminada con éxito!");
+		response.put("mensaje", "El usuario ha sido eliminado con éxito!");
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}

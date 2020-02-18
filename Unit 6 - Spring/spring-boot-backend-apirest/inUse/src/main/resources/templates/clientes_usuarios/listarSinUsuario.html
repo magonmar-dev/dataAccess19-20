@@ -23,13 +23,10 @@
 					<td class="td_lista" th:text="${cliente.apellido}"></td>
 					<td class="td_lista" th:text="${cliente.email}"></td>
 					<td class="td_lista" th:text="${cliente.createAt}"></td>
-					<td><a class="mod_button" th:href="@{http://localhost:8080/app/clientes/modificar/} + ${cliente.id}">Modificar</a></td>
-					<td><a class="del_button" th:href="@{http://localhost:8080/app/clientes/eliminar/} + ${cliente.id}">Eliminar</a></td>
 				</tr>
 			</tbody>
 		</table>
 		<br/>
-		<a class="add_button" th:href="@{/app/clientes/crear}">Añadir cliente</a>
 		<a class="volver_button" th:href="@{http://localhost:8080/app/index}">Volver al index</a>
 	</body>
 </html>

@@ -24,8 +24,8 @@
 					<td class="td_lista" th:text="${producto.fechaAlta}"></td>
 					<td class="td_lista" th:if="${producto.disponibilidad}">Disponible</td>
 					<td class="td_lista" th:unless="${producto.disponibilidad}">No disponible</td>
-					<td class="td_lista"><a th:href="@{http://localhost:8080/app/productos/modificar/} + ${producto.codproducto}">Modificar</a></td>
-					<td class="td_lista"><a th:href="@{http://localhost:8080/app/productos/eliminar/} + ${producto.codproducto}">Eliminar</a></td>
+					<td><a class="mod_button" th:href="@{http://localhost:8080/app/productos/modificar/} + ${producto.codproducto}">Modificar</a></td>
+					<td><a class="del_button" th:href="@{http://localhost:8080/app/productos/eliminar/} + ${producto.codproducto}">Eliminar</a></td>
 				</tr>
 			</tbody>
 		</table>

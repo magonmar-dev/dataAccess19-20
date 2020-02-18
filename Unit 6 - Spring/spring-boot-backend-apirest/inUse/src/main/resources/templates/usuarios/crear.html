@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+<title>Insertar nuevo usuario</title>
+</head>
+<body>
+	<h1>Insertar nuevo usuario</h1>
+	<form th:action="${action}" th:object="${usuario}" method="post">
+		<fieldset>
+			<legend>Datos del usuario</legend>
+			<table class="table_form">
+				<tr>
+					<td class="td_form"><label>Usuario: </label></td>
+					<td class="td_form"><input type="text" th:field="*{name}"/></td>
+				</tr>
+				<tr>
+					<td class="td_form"><label>Contraseña: </label></td>
+					<td class="td_form"><input type="password" th:field="*{password}"/></td>
+				</tr>
+				<tr>
+					<td class="td_form"><label>Cliente: </label></td>
+					<td class="td_form">
+						<select th:field="*{cliente.id}">
+								<option data-th-each="cliente : ${clientes}"
+									th:value="${cliente.id}"
+									th:text="${cliente.nombre + ' ' + cliente.apellido}">
+								</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="td_form"><label>Mail: </label></td>
+					<td class="td_form"><input type="text" th:object="${email}" th:field="${email.mail}"/></td>
+				</tr>
+				<tr>
+					<td class="td_form"><button class="submit_button" type="submit">Añadir</button></td>
+					<td class="td_form"><a class="volver_button" th:href="@{http://localhost:8080/app/index}">Volver al index</a></td>
+				</tr>
+			</table>
+		</fieldset>
+	</form>
+</body>
+</html>

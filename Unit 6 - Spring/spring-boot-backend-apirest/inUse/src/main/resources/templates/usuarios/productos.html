@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+		<title th:text="'Productos comprados por '+ ${nombreUsuario}"></title>
+	</head>
+	<body>
+		<h1 th:text="'Productos comprados por '+ ${nombreUsuario}"></h1>
+		<div th:if="${compras.isEmpty()}">No hay compras en la lista</div>
+		<table class="table_lista" th:if="${not compras.isEmpty()}">
+			<thead>
+				<tr>
+					<th class="th_lista">DESCRIPCIÓN</th>
+					<th class="th_lista">FECHA DE COMPRA</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="compra: ${compras}">
+					<td class="td_lista" th:text="${compra.producto.descripcion}"></td>
+					<td class="td_lista" th:text="${compra.id.fechaCompra}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<a class="volver_button" th:href="@{http://localhost:8080/app/usuarios/listar}">Volver a usuarios</a>
+	</body>
+</html>

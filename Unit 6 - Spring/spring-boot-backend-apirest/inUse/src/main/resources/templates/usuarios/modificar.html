@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+		<title>Modificar usuario</title>
+	</head>
+	<body>
+	<h1>Modificar usuario</h1>
+		<form action="#" th:action="@{http://localhost:8080/app/usuarios/modificar}" th:object="${usuarioMod}" method="post">
+		    <fieldset>
+		        <legend>Datos del usuario a modificar</legend>
+		        <table class="table_form">
+		            <tr>
+		                <td class="td_form"><label>Usuario: </label></td>
+		                <td class="td_form"><input type="text" id="name" name="name" th:value="${usuario.name}"/></td>
+		                <td class="td_form"><input type="hidden" id="id" name="id" th:value="${usuario.id}"/></td>
+		            </tr>
+		            <tr>
+		                <td class="td_form"><label>Cliente: </label></td>
+		                <td class="td_form">
+							<select th:field="*{cliente.id}" id="cliente" name="cliente">
+									<option data-th-each="cliente : ${clientes}"
+										th:value="${cliente.id}"
+										th:text="${cliente.nombre + ' ' + cliente.apellido}">
+									</option>
+							</select>
+						</td>
+						<td class="td_form" th:text="${usuario.cliente.nombre}"></td>
+		            </tr>
+		            <tr>
+						<td class="td_form"><label>Mail: </label></td>
+						<td class="td_form"><input type="email" th:object="${mail}" th:field="${mail.mail}" th:value="${mail.mail}"/></td>
+						<td class="td_form" th:each="mail: ${usuario.mails}" th:text="${mail.mail}"></td>
+					</tr>
+		            <tr>
+		                <td class="td_form"><button class="submit_button" type="submit">Modificar</button></td>
+		                <td class="td_form"><a class="volver_button" th:href="@{http://localhost:8080/app/index}">Volver al index</a></td>
+		            </tr>
+		        </table>
+		    </fieldset>
+		</form>
+	</body>
+</html>

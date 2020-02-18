@@ -51,8 +51,13 @@ public class Cliente implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createAt;
 	
-	@OneToOne
-	@JoinColumn(name="idusuario",unique=true,nullable=true)
+	@OneToOne(mappedBy="cliente")
+	@JoinColumn(
+		name="idusuario",
+		referencedColumnName = "id",
+		unique=true,
+		nullable=true
+	)
 	private Usuario usuario;
 	
 	@OneToMany(
@@ -109,6 +114,14 @@ public class Cliente implements Serializable {
 
 	public void setCompras(Set<ProductoCliente> compras) {
 		this.compras = compras;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	private static final long serialVersionUID = 1L;

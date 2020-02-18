@@ -19,9 +19,9 @@ public class ProductoClienteID implements Serializable {
 	@Column(name = "id_cliente")
 	private Long idCliente;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "fecha_compra")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fechaCompra;
 
 	public Long getCodProducto() {
@@ -44,8 +44,8 @@ public class ProductoClienteID implements Serializable {
 		return fechaCompra;
 	}
 
-	public void setFechaCompra(Date fechaCompra) {
-		this.fechaCompra = fechaCompra;
+	public void setFechaCompra(Date fecha) {
+		this.fechaCompra = fecha;
 	}
 
 	@Override
@@ -83,6 +83,12 @@ public class ProductoClienteID implements Serializable {
 		} else if (!idCliente.equals(other.idCliente))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductoClienteID [codProducto=" + codProducto + ", idCliente=" + idCliente + ", fechaCompra="
+				+ fechaCompra + "]";
 	}
 
 	private static final long serialVersionUID = 4L;

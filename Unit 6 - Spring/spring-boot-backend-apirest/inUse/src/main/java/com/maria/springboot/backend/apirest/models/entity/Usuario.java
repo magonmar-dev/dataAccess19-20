@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -24,12 +26,21 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotEmpty(message="no puede estar vacío")
+	@Column(nullable=false)
 	private String name;
 	
+	@NotEmpty(message="no puede estar vacío")
+	@Column(nullable=false)
 	private String password;
 	
 	@OneToOne
-	@JoinColumn(name="idcliente",unique=true,nullable=false)
+	@JoinColumn(
+		name="idcliente",
+		referencedColumnName = "id",
+		unique=true,
+		nullable=false
+	)
 	private Cliente cliente;
 	
 	@OneToMany(
@@ -38,8 +49,18 @@ public class Usuario implements Serializable {
         orphanRemoval = true
 	)
 	@JsonBackReference
-	private Set<Mail> mails = new HashSet<>();
+	private Set<Mail> mails = new HashSet<Mail>();
 	
+	public Usuario() {}
+
+	public Usuario(Long id, String name, String password, Cliente cliente, Set<Mail> mails) {
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.cliente = cliente;
+		this.mails = mails;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -72,5 +93,13 @@ public class Usuario implements Serializable {
 		this.cliente = cliente;
 	}
 	
+	public Set<Mail> getMails() {
+		return mails;
+	}
+
+	public void setMails(Set<Mail> mails) {
+		this.mails = mails;
+	}
+
 	private static final long serialVersionUID = 5L;
 }

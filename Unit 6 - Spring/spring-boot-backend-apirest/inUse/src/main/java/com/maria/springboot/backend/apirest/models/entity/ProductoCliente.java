@@ -17,13 +17,13 @@ public class ProductoCliente implements Serializable {
 	@EmbeddedId
 	public ProductoClienteID id;
 	
-	@MapsId("codProducto")
+	@MapsId("cod_producto")
 	@ManyToOne
 	@JoinColumn(name="cod_producto")
 	@JsonManagedReference
 	public Producto producto;
  
-	@MapsId("idCliente")
+	@MapsId("id_cliente")
     @ManyToOne
     @JoinColumn(name="id_cliente")
     @JsonManagedReference
@@ -51,6 +51,11 @@ public class ProductoCliente implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductoCliente [id=" + id + "]";
 	}
 
 	private static final long serialVersionUID = 3L;

@@ -21,9 +21,9 @@
 					<td class="td_lista" th:text="${compra.id.fechaCompra}"></td>
 					<td class="td_lista" th:text="${compra.cliente.nombre}"></td>
 					<td class="td_lista" th:text="${compra.producto.descripcion}"></td>
-					<td class="td_lista"><a th:href="@{http://localhost:8080/app/productos_clientes/modificar/} 
+					<td><a class="mod_button" th:href="@{http://localhost:8080/app/productos_clientes/modificar/} 
 						+ ${compra.id.fechaCompra} + '/' + ${compra.id.idCliente} + '/' + ${compra.id.codProducto}">Modificar</a></td>
-					<td class="td_lista"><a th:href="@{http://localhost:8080/app/productos_clientes/eliminar/} 
+					<td><a class="del_button" th:href="@{http://localhost:8080/app/productos_clientes/eliminar/} 
 						+ ${compra.id.fechaCompra} + '/' + ${compra.id.idCliente} + '/' + ${compra.id.codProducto}">Eliminar</a></td>
 				</tr>
 			</tbody>
