@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-ene-2020 16:20:30 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.maria.harrypotterhibernate.Personajes" table="personajes" schema="public" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="casas" class="com.maria.harrypotterhibernate.Casas" fetch="select">
+            <column name="id_casa" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="varita" type="string">
+            <column name="varita" />
+        </property>
+        <set name="rols" table="poseer" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="id_personaje" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.maria.harrypotterhibernate.Rol">
+                <column name="id_rol" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="mascotases" table="mascotas" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="dueno" unique="true" />
+            </key>
+            <one-to-many class="com.maria.harrypotterhibernate.Mascotas" />
+        </set>
+    </class>
+</hibernate-mapping>

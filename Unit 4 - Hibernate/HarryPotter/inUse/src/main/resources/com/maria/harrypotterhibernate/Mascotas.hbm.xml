@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-ene-2020 16:20:30 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.maria.harrypotterhibernate.Mascotas" table="mascotas" schema="public" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="personajes" class="com.maria.harrypotterhibernate.Personajes" fetch="select">
+            <column name="dueno" unique="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
